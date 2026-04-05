@@ -1,0 +1,368 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MAKIMA M-DX · Connexion sécurisée</title>
+  <meta name="description" content="Connectez votre numéro WhatsApp à MAKIMA M-DX – générez votre code d'appairage en un instant.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========== MÊMES VARIABLES QUE L'ACCUEIL ========== */
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #fff5f8;
+      --text: #1e0a16;
+      --text-muted: #6e4a5e;
+      --accent: #ff2a6d;
+      --accent-light: #ff88b0;
+      --border: rgba(0, 0, 0, 0.05);
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+      --transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    body.dark {
+      --bg: #1a0010;
+      --bg-secondary: #2a0018;
+      --text: #ffeef4;
+      --text-muted: #cc99b0;
+      --accent: #ff88b0;
+      --accent-light: #ffc0e0;
+      --border: rgba(255, 255, 255, 0.08);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+      transition: var(--transition);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .theme-switch {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 100;
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 60px;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+    .theme-switch:hover {
+      transform: scale(1.05);
+      border-color: var(--accent);
+    }
+    .theme-switch svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--text);
+      stroke-width: 2;
+    }
+    body.dark .theme-switch .sun-icon { display: none; }
+    body:not(.dark) .theme-switch .moon-icon { display: none; }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: var(--transition);
+      margin-left: 1.5rem;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .pairing-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      animation: fadeUp 0.6s ease;
+    }
+    .glass-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+    }
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+    .sub {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 60px;
+      color: var(--text);
+      font-size: 1rem;
+      transition: var(--transition);
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(255, 42, 109, 0.2);
+    }
+    button {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      padding: 1rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    button:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 42, 109, 0.3);
+    }
+    .code-result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 28px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .code-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      font-family: monospace;
+      letter-spacing: 6px;
+      color: var(--accent);
+      word-break: break-all;
+    }
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      width: auto;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+    }
+    .copy-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+    .error-msg {
+      color: #e74c3c;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .loader {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @media (max-width: 600px) {
+      .glass-card { padding: 1.5rem; margin: 1rem; }
+      h1 { font-size: 1.6rem; }
+      .code-number { font-size: 1.8rem; letter-spacing: 3px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-switch" id="themeToggle">
+    <svg class="sun-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="moon-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </div>
+
+  <nav>
+    <div class="logo">MAKIMA M-DX</div>
+    <div class="nav-links">
+      <a href="index.html">Accueil</a>
+      <a href="pairing.html" style="color: var(--accent);">Connexion</a>
+    </div>
+  </nav>
+
+  <div class="pairing-container">
+    <div class="glass-card">
+      <h1>Générer votre code</h1>
+      <p class="sub">Entrez votre numéro WhatsApp avec indicatif pays (ex: 237671410035)</p>
+      <div class="input-group">
+        <label>Numéro WhatsApp</label>
+        <input type="tel" id="phoneNumber" placeholder="237671410035" maxlength="15">
+      </div>
+      <button id="generateBtn">Obtenir le code d'appairage</button>
+      <div id="resultArea"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 THE DARKNESS — MAKIMA M-DX | Authentification par code</p>
+  </footer>
+
+  <script>
+    // Thème
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    if (localStorage.getItem('makima-theme') === 'dark') {
+      body.classList.add('dark');
+    }
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      localStorage.setItem('makima-theme', body.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    const generateBtn = document.getElementById('generateBtn');
+    const phoneInput = document.getElementById('phoneNumber');
+    const resultArea = document.getElementById('resultArea');
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✅ Code copié dans le presse-papier');
+      }).catch(() => {
+        alert('❌ Impossible de copier');
+      });
+    }
+
+    generateBtn.addEventListener('click', async () => {
+      let rawNumber = phoneInput.value.trim();
+      const cleanNumber = rawNumber.replace(/\D/g, '');
+      if (cleanNumber.length < 8) {
+        resultArea.innerHTML = `<div class="error-msg">❌ Numéro invalide (ex: 237671410035)</div>`;
+        return;
+      }
+
+      resultArea.innerHTML = `<div class="code-result"><div class="loader"></div> Génération en cours...</div>`;
+
+      try {
+        // Appel relatif : même origine, donc HTTPS automatique
+        const response = await fetch('/api/pair', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number: cleanNumber })
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success && data.code) {
+          const code = data.code;
+          resultArea.innerHTML = `
+            <div class="code-result">
+              <div>✅ Code d'appairage (valable 60 secondes)</div>
+              <div class="code-number">${code}</div>
+              <button class="copy-btn" id="copyCodeBtn">Copier le code</button>
+              <div style="font-size:0.8rem; margin-top:0.8rem;">
+                Sur WhatsApp, allez dans <strong>Appareils liés → Lier avec un code à 8 chiffres</strong>.
+              </div>
+            </div>
+          `;
+          const copyBtn = document.getElementById('copyCodeBtn');
+          if (copyBtn) copyBtn.addEventListener('click', () => copyToClipboard(code));
+        } else if (data.error) {
+          resultArea.innerHTML = `<div class="error-msg">❌ Erreur : ${data.error}</div>`;
+        } else {
+          resultArea.innerHTML = `<div class="error-msg">❌ Réponse inattendue du serveur.</div>`;
+        }
+      } catch (err) {
+        console.error('Erreur réseau :', err);
+        resultArea.innerHTML = `<div class="error-msg">❌ Impossible de joindre le serveur. Vérifiez que le backend tourne (port 19112).</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
